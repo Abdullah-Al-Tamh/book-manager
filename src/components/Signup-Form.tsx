@@ -14,7 +14,7 @@ import { signup } from "../lib/auth-actions";
 
 export function SignUpForm() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex bg-black min-h-screen items-center justify-center">
       <Card className="mx-auto max-w-sm">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
@@ -77,7 +77,7 @@ export function SignUpForm() {
           </form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
-            <Link href="/login" className="underline">
+            <Link href="/" className="underline">
               Sign in
             </Link>
           </div>
