@@ -49,10 +49,6 @@ export default function AdminDashboard() {
       alert("No approved books to save.");
       return;
     }
-  async function handleSaveApprovedBooks() {
-    const approvedBooks = await supabase.from("books").select("*");
-    return approvedBooks.data;
-  }
 
     const BooksInfo = approvedBooks.map((book) => ({
       title: book.volumeInfo.title || "No title",
@@ -102,7 +98,7 @@ export default function AdminDashboard() {
             {books.map((book) => {
               const info = book.volumeInfo;
               const isApproved = approvedBooks.some((b) => b.id === book.id);
-              
+
               return (
                 <div
                   key={book.id}
@@ -148,7 +144,6 @@ export default function AdminDashboard() {
             ✅ Approved Books
           </h2>
           {approvedBooks.length === 0 ? (
-            handleSaveApprovedBooks()
             <p className="text-white">No books approved yet.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -13,7 +13,10 @@ export default function UserDashboard() {
   useEffect(() => {
     async function fetchApprovedBooks() {
       setIsLoading(true);
-      const { data, error } = await supabase.from("books").select("*");
+      const { data, error } = await supabase
+        .from("books")
+        .select("*")
+        .eq("is_approved", true);
       if (error) {
         console.error("Error fetching approved books:", error);
         setIsLoading(false);
