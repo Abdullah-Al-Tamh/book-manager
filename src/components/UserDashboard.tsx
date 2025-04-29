@@ -31,5 +31,20 @@ export default function UserDashboard() {
 
   if (isLoading) return <Loading />;
 
-  return <UserCard approvedBooks={approvedBooks} />;
+  return (
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="fixed inset-0 -z-10 bg-black">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+      </div>
+
+      <div className="relative z-10 flex flex-col min-h-screen p-8">
+        <div className="flex justify-between items-center mb-8">
+          <Logoutbutton />
+          <h1 className="text-3xl font-bold text-white">📚 User Dashboard</h1>
+        </div>
+
+        <UserCard approvedBooks={approvedBooks} />
+      </div>
+    </div>
+  );
 }

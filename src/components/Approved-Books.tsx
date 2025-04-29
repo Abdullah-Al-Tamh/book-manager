@@ -7,51 +7,72 @@ interface ApprovedBooksProps {
   }[];
   onRemoveBook: (id: string) => void;
 }
+
 export default function ApprovedBooks({
   approvedBooks,
   onRemoveBook,
 }: ApprovedBooksProps) {
   return (
-    <div className="w-full lg:w-1/2">
-      <h2 className="text-2xl font-semibold text-white mb-4">
-        ✅ Approved Books
-      </h2>
+    <div className="flex flex-wrap justify-center gap-8">
+      <div className="w-full text-center">
+        <h2 className="text-2xl font-semibold text-white mb-8">
+          ✅ Approved Books
+        </h2>
+      </div>
       {approvedBooks.length === 0 ? (
-        <p className="text-white">No books approved yet.</p>
+        <p className="text-white text-center w-full">No books approved yet.</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {approvedBooks.map((book) => {
-            const info = book.volumeInfo;
-            return (
-              <div
-                key={book.id}
-                className="bg-green-100 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 p-4 flex flex-col"
-              >
+        approvedBooks.map((book) => {
+          const info = book.volumeInfo;
+          return (
+            <a
+              key={book.id}
+              href="#"
+              className="group relative block w-60 h-80 sm:h-96 overflow-hidden rounded-lg"
+            >
+              <span className="absolute inset-0 border-2 border-dashed border-green-700"></span>
+
+              <div className="relative flex h-full w-full items-end border-2 border-green-700 transition-transform group-hover:scale-105">
+                {/* Full background image */}
                 <img
                   src={
                     info.imageLinks?.thumbnail ||
                     "https://via.placeholder.com/150"
                   }
                   alt={info.title || "No title"}
-                  className="w-full h-48 object-cover rounded mb-4"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
-                <h3 className="text-lg font-bold mb-2">{info.title}</h3>
-                <p className="text-gray-700 text-sm flex-grow">
-                  {info.description
-                    ? info.description.slice(0, 100) + "..."
-                    : "No description available"}
-                </p>
 
-                <button
-                  className="mt-4 py-2 px-4 rounded font-semibold text-white bg-red-600 hover:bg-red-700 transition"
-                  onClick={() => onRemoveBook(book.id)}
-                >
-                  ❌ Remove
-                </button>
+                {/* First Layer (Title only) */}
+                <div className="p-4 transition-opacity group-hover:opacity-0 z-10 w-full text-center bg-green-800/50">
+                  <h3 className="text-lg font-bold text-white truncate">
+                    {info.title || "No title"}
+                  </h3>
+                </div>
+
+                {/* Hover Layer (Details + Button) */}
+                <div className="absolute inset-0 p-4 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-end bg-green-900/70 text-white z-10">
+                  <h3 className="text-lg font-bold mb-2">{info.title}</h3>
+                  <p className="text-sm mb-4">
+                    {info.description
+                      ? info.description.slice(0, 80) + "..."
+                      : "No description available"}
+                  </p>
+
+                  <button
+                    className="w-full py-2 px-4 rounded font-semibold text-white bg-red-600 hover:bg-red-700 transition"
+                    onClick={(e) => {
+                      e.preventDefault(); // prevent link click
+                      onRemoveBook(book.id);
+                    }}
+                  >
+                    ❌ Remove
+                  </button>
+                </div>
               </div>
-            );
-          })}
-        </div>
+            </a>
+          );
+        })
       )}
     </div>
   );

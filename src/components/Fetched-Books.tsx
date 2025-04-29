@@ -12,56 +12,67 @@ export default function FetchedBooks({
   onApproveBook,
 }: FetchedBooksProps) {
   return (
-    <div className="flex flex-col lg:flex-row gap-8">
-      <div className="w-full lg:w-1/2">
-        <h2 className="text-2xl font-semibold text-white mb-4">
-          All Fetched Books
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {books.map((book) => {
-            const info = book.volumeInfo;
-            const isApproved = approvedBooks.some(
-              (b: { id: any }) => b.id === book.id
-            );
+    <div className="flex flex-wrap justify-center gap-8">
+      {books.map((book) => {
+        const info = book.volumeInfo;
+        const isApproved = approvedBooks.some(
+          (b: { id: any }) => b.id === book.id
+        );
 
-            return (
-              <div
-                key={book.id}
-                className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition duration-300 p-4 flex flex-col"
-              >
-                <img
-                  src={
-                    info.imageLinks?.thumbnail ||
-                    "https://via.placeholder.com/150"
-                  }
-                  alt={info.title || "No title"}
-                  className="w-full h-48 object-cover rounded mb-4"
-                />
+        return (
+          <a
+            key={book.id}
+            href="#"
+            className="group relative block w-60 h-80 sm:h-96 overflow-hidden rounded-lg"
+          >
+            <span className="absolute inset-0 border-2 border-dashed border-black"></span>
+
+            <div className="relative flex h-full w-full items-end border-2 border-black transition-transform group-hover:scale-105">
+              {/* Full background image */}
+              <img
+                src={
+                  info.imageLinks?.thumbnail ||
+                  "https://via.placeholder.com/150"
+                }
+                alt={info.title || "No title"}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* First Layer (Title only) */}
+              <div className="p-4 transition-opacity group-hover:opacity-0 z-10 w-full text-center bg-black/40">
+                <h3 className="text-lg font-bold text-white truncate">
+                  {info.title || "No title"}
+                </h3>
+              </div>
+
+              {/* Hover Layer (Details + Button) */}
+              <div className="absolute inset-0 p-4 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-end bg-black/60 text-white z-10">
                 <h3 className="text-lg font-bold mb-2">{info.title}</h3>
-                <p className="text-gray-700 text-sm flex-grow">
+                <p className="text-sm mb-4">
                   {info.description
-                    ? info.description.slice(0, 100) + "..."
+                    ? info.description.slice(0, 80) + "..."
                     : "No description available"}
                 </p>
 
                 <button
-                  className={`mt-4 py-2 px-4 rounded font-semibold text-white transition
-                      ${
-                        isApproved
-                          ? "bg-gray-500 hover:bg-gray-600"
-                          : "bg-green-600 hover:bg-green-700"
-                      }
-                    `}
-                  onClick={() => onApproveBook(book.id ?? "")}
+                  className={`w-full py-2 px-4 rounded font-semibold text-white transition ${
+                    isApproved
+                      ? "bg-gray-500 hover:bg-gray-600"
+                      : "bg-green-600 hover:bg-green-700"
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault(); // prevent link click
+                    onApproveBook(book.id ?? "");
+                  }}
                   disabled={isApproved}
                 >
                   {isApproved ? "✅ Approved" : "Approve"}
                 </button>
               </div>
-            );
-          })}
-        </div>
-      </div>
+            </div>
+          </a>
+        );
+      })}
     </div>
   );
 }

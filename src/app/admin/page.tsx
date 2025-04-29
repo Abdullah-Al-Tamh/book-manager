@@ -1,6 +1,8 @@
-import AdminDashboard from "@/components/AdminDashboard";
-import React from "react";
+import checkAdmin from "../../../utils/auth/checkAdmin";
+import AdminDashboard from "../../components/AdminDashboard";
 
-export default function page() {
+export default async function AdminPage() {
+  await checkAdmin();
+
   return <AdminDashboard />;
 }

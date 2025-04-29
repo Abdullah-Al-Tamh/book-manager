@@ -26,7 +26,7 @@ export default function AdminDashboard() {
     async function fetchBooks() {
       setIsLoading(true);
       const res = await fetch(
-        "https://www.googleapis.com/books/v1/volumes?q=computerscience&maxResults=30"
+        "https://www.googleapis.com/books/v1/volumes?q=computerscience&maxResults=40"
       );
       const data = await res.json();
       setBooks(data.items || []);
@@ -69,49 +69,49 @@ export default function AdminDashboard() {
     }
   }
 
-  async function checkIfApproved(bookId: string) {
-    const { data, error } = await supabase
-      .from("books")
-      .select("is_approved")
-      .eq("id", bookId)
-      .single();
-
-    if (error) {
-      console.error("Error checking approval:", error.message);
-      return false;
-    }
-
-    return data?.is_approved === true;
-  }
-
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-8">
-      <div className="flex items-start justify-between mb-8">
-        <Logoutbutton />
-
-        <h1 className="text-3xl font-bold text-white">📚 Admin Dashboard</h1>
-        <button
-          onClick={handleSaveApprovedBooks}
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition"
-        >
-          Save Approved Books
-        </button>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background Pattern */}
+      <div className="fixed inset-0 -z-10 bg-black">
+        <div className="relative h-full w-full bg-black">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+        </div>
       </div>
 
-      <FetchedBooks
-        books={books}
-        approvedBooks={approvedBooks}
-        onApproveBook={handleApproveBook}
-      />
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col min-h-screen p-8">
+        <div className="flex items-start justify-between mb-8">
+          <Logoutbutton />
+          <h1 className="text-3xl font-bold text-white">📚 Admin Dashboard</h1>
+          <button
+            onClick={handleSaveApprovedBooks}
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition"
+          >
+            Save Approved Books
+          </button>
+        </div>
 
-      <ApprovedBooks
-        approvedBooks={approvedBooks}
-        onRemoveBook={handleRemoveBook}
-      />
+        <div className="flex flex-col lg:flex-row gap-12 w-full px-4">
+          <div className="flex-1">
+            <FetchedBooks
+              books={books}
+              approvedBooks={approvedBooks}
+              onApproveBook={handleApproveBook}
+            />
+          </div>
+
+          <div className="flex-1">
+            <ApprovedBooks
+              approvedBooks={approvedBooks}
+              onRemoveBook={handleRemoveBook}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
