@@ -19,10 +19,6 @@ type UserCardProps = {
 export default function UserCard({ approvedBooks }: UserCardProps) {
   return (
     <div className="p-8 bg-black min-h-screen flex flex-col items-center">
-      <div className="mb-8 items-start">
-        <Logoutbutton />
-      </div>
-
       <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center">
         {approvedBooks.length > 0 ? (
           approvedBooks.map((book) => (

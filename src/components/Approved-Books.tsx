@@ -1,9 +1,14 @@
+"use client";
 import React from "react";
 
 interface ApprovedBooksProps {
   approvedBooks: {
-    volumeInfo: any;
     id: string;
+    volumeInfo: {
+      title?: string;
+      description?: string;
+      imageLinks?: { thumbnail?: string };
+    };
   }[];
   onRemoveBook: (id: string) => void;
 }
@@ -33,7 +38,6 @@ export default function ApprovedBooks({
               <span className="absolute inset-0 border-2 border-dashed border-green-700"></span>
 
               <div className="relative flex h-full w-full items-end border-2 border-green-700 transition-transform group-hover:scale-105">
-                {/* Full background image */}
                 <img
                   src={
                     info.imageLinks?.thumbnail ||
@@ -43,14 +47,12 @@ export default function ApprovedBooks({
                   className="absolute inset-0 w-full h-full object-cover"
                 />
 
-                {/* First Layer (Title only) */}
                 <div className="p-4 transition-opacity group-hover:opacity-0 z-10 w-full text-center bg-green-800/50">
                   <h3 className="text-lg font-bold text-white truncate">
                     {info.title || "No title"}
                   </h3>
                 </div>
 
-                {/* Hover Layer (Details + Button) */}
                 <div className="absolute inset-0 p-4 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-end bg-green-900/70 text-white z-10">
                   <h3 className="text-lg font-bold mb-2">{info.title}</h3>
                   <p className="text-sm mb-4">
@@ -62,7 +64,7 @@ export default function ApprovedBooks({
                   <button
                     className="w-full py-2 px-4 rounded font-semibold text-white bg-red-600 hover:bg-red-700 transition"
                     onClick={(e) => {
-                      e.preventDefault(); // prevent link click
+                      e.preventDefault();
                       onRemoveBook(book.id);
                     }}
                   >
